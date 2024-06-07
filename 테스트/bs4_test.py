@@ -9,6 +9,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoAlertPresentException
 
+
 def test():
     global driver
     driver = mDriver.make_driver('t2',mode='pc')
@@ -128,18 +129,7 @@ def 정원몰품절확인():
             element = driver.find_element(By.XPATH, selector)
             print(f'코드:{code} , {element.text}')
             
-        
-        # # 구매 가져오기
-        # selector = "//button[@class='btn_add_order']"
-        # WebDriverWait(driver, 2).until(EC.presence_of_element_located((By.XPATH, selector)))  # 검색결과 기다리기
-        # element = driver.find_element(By.XPATH, selector)
-        # print(element.text)
 
-        # #품절 가져오기
-        # selector = "//button[@class='btn_add_soldout']"
-        # WebDriverWait(driver, 2).until(EC.presence_of_element_located((By.XPATH, selector)))  # 검색결과 기다리기
-        # element = driver.find_element(By.XPATH, selector)
-        # print(element.text)
     
 if __name__ == "__main__":
     # test()
