@@ -85,13 +85,15 @@ def 동원몰품절확인():
 def 동원몰품절확인_셀레니움테스트():
     
     driver = mDriver.make_driver('t21',mode='pc')
+    base_url = "https://www.dongwonmall.com/product/detail.do?productId="
+    url = base_url + "001430569"
+    
     start_time = time.time()  # 시작 시간 기록
     #동원몰 긁어오기
     # for code in L_dwCode[:3]:
 
     for count in range(500):
-        base_url = "https://www.dongwonmall.com/product/detail.do?productId="
-        url = base_url + "001430569"
+        
         driver.get(url)
         
         try:
