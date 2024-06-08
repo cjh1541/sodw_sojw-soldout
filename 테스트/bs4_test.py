@@ -2,8 +2,9 @@ from bs4 import BeautifulSoup
 from lxml import etree
 import requests
 import pandas as pd
+import time
 
-import mDriver_mode as mDriver
+import mDriver_mode_test as mDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -37,8 +38,9 @@ def 동원몰품절확인():
         code = maincode[4:]
         L_dwCode.append(code)
         
+    start_time = time.time()  # 시작 시간 기록
     #동원몰 긁어오기
-    for code in L_dwCode:
+    for code in L_dwCode[:3]:
         base_url = "https://www.dongwonmall.com/product/detail.do?productId="
         url = base_url + code
         
@@ -69,7 +71,67 @@ def 동원몰품절확인():
             print("품절아님")
             element = tree.xpath("//button[@class='btn_lg btn_buy_lg']")[0].text
             print(element)
+    end_time = time.time()  # 종료 시간 기록
+    elapsed_time = end_time - start_time  # 경과 시간 계산
+    
+    # 시, 분, 초로 변환
+    hours = int(elapsed_time // 3600)
+    minutes = int((elapsed_time % 3600) // 60)
+    seconds = elapsed_time % 60
+
+    # 결과 출력
+    print(f"구동 시간: {hours}시간 {minutes}분 {seconds:.2f}초")  
+    
+def 동원몰품절확인_셀레니움테스트():
+    
+    driver = mDriver.make_driver('t21',mode='pc')
+    start_time = time.time()  # 시작 시간 기록
+    #동원몰 긁어오기
+    # for code in L_dwCode[:3]:
+
+    for count in range(500):
+        base_url = "https://www.dongwonmall.com/product/detail.do?productId="
+        url = base_url + "001430569"
+        driver.get(url)
         
+        try:
+            # 그냥 셀레니움 테스트
+            selector = "//button[@class='btn_lg btn_buy_lg']"
+            WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, selector)))  # 검색결과 기다리기
+            element = driver.find_element(By.XPATH, selector)
+            print(f'셀레니움 성공 {count} 번째 , {element.text}')
+            
+            #bs4 로 가져오기 테스트
+            # response = requests.get(url)
+            # response.raise_for_status()
+            # # BeautifulSoup로 HTML 파싱
+            # soup = BeautifulSoup(response.content, 'lxml') #gpt code
+            
+            # # XPath를 BeautifulSoup에서 사용 가능한 형식으로 변환
+            # # BeautifulSoup은 XPath를 직접 지원하지 않으므로 lxml의 etree를 사용
+
+            # parser = etree.HTMLParser()
+            # tree = etree.fromstring(str(soup), parser)
+            # element = tree.xpath("//button[@class='btn_lg btn_buy_lg']")[0].text
+            # print(f'bs4 성공 {count}번째, {element}')
+            
+        except:
+            print(f'에러 : {count}')
+        
+
+
+
+    end_time = time.time()  # 종료 시간 기록
+    elapsed_time = end_time - start_time  # 경과 시간 계산
+    
+    # 시, 분, 초로 변환
+    hours = int(elapsed_time // 3600)
+    minutes = int((elapsed_time % 3600) // 60)
+    seconds = elapsed_time % 60
+
+    # 결과 출력
+    print(f"구동 시간: {hours}시간 {minutes}분 {seconds:.2f}초")  
+    
 def 정원몰품절확인():
     # 엑셀불러오기
     df_jw = pd.read_excel('./진행상품/테스트용진행상품.xls',sheet_name='정원몰')
@@ -133,4 +195,4 @@ def 정원몰품절확인():
     
 if __name__ == "__main__":
     # test()
-    정원몰품절확인()
+    동원몰품절확인_셀레니움테스트()
