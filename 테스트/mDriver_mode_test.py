@@ -99,11 +99,11 @@ def make_driver(account_id,mode='mo'):
         options.add_argument(f"--window-size={width},{height}")
         options.add_argument("--no-first-run --no-service-autorun --password-store=basic")
         options.add_argument('--disable-logging')
-        # options.headless = False #add this line 기존코드
+        options.headless = False #add this line 기존코드
         
         #테스트용 추가
-        options.add_argument('--headless')  # 브라우저 창을 띄우지 않음
-        options.add_argument('--disable-gpu')
+        # options.add_argument('--headless')  # 브라우저 창을 띄우지 않음
+        # options.add_argument('--disable-gpu')
         
         
         # 크롬드라이버 수동 설정 

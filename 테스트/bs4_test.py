@@ -92,16 +92,16 @@ def 동원몰품절확인_셀레니움테스트():
     #동원몰 긁어오기
     # for code in L_dwCode[:3]:
 
-    for count in range(500):
+    for count in range(3):
         
         driver.get(url)
         
         try:
             # 그냥 셀레니움 테스트
-            selector = "//button[@class='btn_lg btn_buy_lg']"
-            WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, selector)))  # 검색결과 기다리기
-            element = driver.find_element(By.XPATH, selector)
-            print(f'셀레니움 성공 {count} 번째 , {element.text}')
+            # selector = "//button[@class='btn_lg btn_buy_lg']"
+            # WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, selector)))  # 검색결과 기다리기
+            # element = driver.find_element(By.XPATH, selector)
+            # print(f'셀레니움 성공 {count} 번째 , {element.text}')
             
             #bs4 로 가져오기 테스트
             # response = requests.get(url)
@@ -116,6 +116,24 @@ def 동원몰품절확인_셀레니움테스트():
             # tree = etree.fromstring(str(soup), parser)
             # element = tree.xpath("//button[@class='btn_lg btn_buy_lg']")[0].text
             # print(f'bs4 성공 {count}번째, {element}')
+            
+            # 셀레니움 + bs4
+            
+            # 특정 요소가 나타날 때까지 대기
+            WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.XPATH, "//button[@class='btn_lg btn_buy_lg']"))
+                )
+            # 페이지 소스를 가져와서 BeautifulSoup으로 파싱
+            # soup = BeautifulSoup(response.content, 'lxml') #gpt code
+            soup = BeautifulSoup(driver.page_source, 'lxml')
+            
+            # XPath를 BeautifulSoup에서 사용 가능한 형식으로 변환
+            # BeautifulSoup은 XPath를 직접 지원하지 않으므로 lxml의 etree를 사용
+
+            parser = etree.HTMLParser()
+            tree = etree.fromstring(str(soup), parser)
+            element = tree.xpath("//button[@class='btn_lg btn_buy_lg']")[0].text
+            print(f'bs4 성공 {count}번째, {element}')
             
         except:
             print(f'에러 : {count}')
