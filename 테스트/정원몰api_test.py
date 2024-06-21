@@ -16,10 +16,10 @@ from selenium.common.exceptions import NoAlertPresentException
 # 정원몰 bs4 로 크롤링 가능(확인함)
 def test2():
     # 정원몰 bs4 로 크롤링 가능(확인함)
-    url = "https://www.jungoneshop.com/goods/goods_view.php?goodsNo=2194"
+    url = "https://search.shopping.naver.com/search/all?query=%EC%A4%84%EB%88%88"
 
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
     }
 
     session = requests.Session()
@@ -27,6 +27,7 @@ def test2():
     response.raise_for_status()
 
     soup = BeautifulSoup(response.content, 'lxml')
+    
     # print(f'soup : {soup}')
 
     # # HTML 데이터를 보기 좋게 포맷팅
@@ -49,17 +50,37 @@ api 로 크롤링 하기 테스트  (밑에부터)
         
 def test():
     global driver
-    driver = mDriver.make_driver('t2',mode='pc')
+    driver = mDriver.make_driver('t1',mode='pc')
     
-    url = "https://www.jungoneshop.com/goods/goods_view.php?goodsNo=2194"
+    url = "https://search.shopping.naver.com/search/all?query=%EC%A4%84%EB%88%88"
+    driver.get(url)
+    
+    # url = "https://sleepy-it.tistory.com/6"
+    url = "https://search.shopping.naver.com/search/all?query=%EC%A4%84%EB%88%88"
+    # url = "https://search.shopping.naver.com/api/search/all?adQuery=%EC%A4%84%EB%88%88&eq=&iq=&origQuery=%EC%A4%84%EB%88%88&pagingIndex=1&pagingSize=40&productSet=model&query=%EC%A4%84%EB%88%88&sort=rel&viewType=list&window=&xq="
     driver.get(url)
     
     
-    selector = "//button[@class='btn_add_order']" 
-    WebDriverWait(driver, 2).until(EC.presence_of_element_located((By.XPATH, selector)))  # 검색결과 기다리기
-    element = driver.find_element(By.XPATH, selector)
-    print(f'element : {element.text}')
+    # selector = "//button[@class='btn_add_order']" 
+    # WebDriverWait(driver, 2).until(EC.presence_of_element_located((By.XPATH, selector)))  # 검색결과 기다리기
+    # element = driver.find_element(By.XPATH, selector)
+    # print(f'element : {element.text}')
+    input()
+    
+def test3():
+    keyword = "줄눈"
+    url  = f"https://search.shopping.naver.com/search/all?query={keyword}"
+    url = "https://search.shopping.naver.com/api/search/all?adQuery=%EC%A4%84%EB%88%88&eq=&iq=&origQuery=%EC%A4%84%EB%88%88&pagingIndex=1&pagingSize=40&productSet=model&query=%EC%A4%84%EB%88%88&sort=rel&viewType=list&window=&xq="
 
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36'}
+
+    res = requests.get(url, headers=headers)
+    
+    soup = BeautifulSoup(res.content, 'lxml')
+
+    print(soup)
+    
+    
 def load_excel():
     # path = './output.xlsx'
     # 현재 파일의 디렉토리 경로
@@ -108,5 +129,5 @@ def load_excel():
             
 
 if __name__ == "__main__":
-    # test()
-    load_excel()
+    test3()
+    # load_excel()
